@@ -1,0 +1,153 @@
+@import "../../scss/vars.scss";
+
+@mixin table-cell {
+  padding: 2rem;
+  min-width: 10%;
+  line-height: 1.5;
+  height: auto;
+}
+
+.table-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  & .table-container__table {
+    width: 90%;
+    border-collapse: collapse;
+
+    & > .table__head {
+      tr {
+        color: $color-light-main;
+        border-bottom: 0.5rem solid $color-dark-main;
+        th {
+          @include table-cell;
+          cursor: pointer;
+          &:hover {
+            color: $color-light-transparent;
+          }
+        }
+      }
+    }
+
+    & > .table__body {
+      letter-spacing: 0.5px;
+
+      & .table-body__row {
+        border-bottom: 2rem solid $color-dark-main;
+        transition: 0.7s all ease-in-out;
+        background-color: $color-dark-main;
+
+        &:hover {
+          transform: scale(1.012);
+        }
+
+        &.table-body__row--open {
+          background: linear-gradient(90deg, rgba(205, 234, 196, 0.5) 0%, rgba(205, 234, 196, 1) 10%, rgba(205, 234, 196, 0.5) 100%);
+          &:hover {
+            background: linear-gradient(90deg, rgba(205, 234, 196, 0.9) 0%, rgba(205, 234, 196, 1) 10%, rgba(205, 234, 196, 0.9) 100%);
+          }
+        }
+        &.table-body__row--closed {
+          background: linear-gradient(90deg, rgba(244, 213, 213, 0.5) 0%, rgba(244, 213, 213, 1) 10%, rgba(244, 213, 213, 0.5) 100%);
+          &:hover {
+            background: linear-gradient(90deg, rgba(244, 213, 213, 0.9) 0%, rgba(244, 213, 213, 1) 10%, rgba(244, 213, 213, 0.9) 100%);
+          }
+        }
+
+        & > td {
+          @include table-cell;
+          border-left: 0.25rem solid $color-dark-main;
+          border-right: 0.25rem solid $color-dark-main;
+
+          &.row__td-description {
+            width: 45%;
+            cursor: pointer;
+            text-align: justify;
+
+            &:hover,
+            &:active {
+              .expand-button {
+                font-style: italic;
+              }
+            }
+
+            .expand-button {
+              color: $color-light-transparent;
+              display: block;
+              opacity: 0.6;
+              font-size: 0.8em;
+              padding-top: 1em;
+              text-align: right;
+              &:hover,
+              &:active {
+                opacity: 0.8;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @media (max-width: 1120px) {
+      margin-top: 1rem;
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      & > .table__head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        tr {
+          display: flex;
+          justify-content: center;
+          text-decoration: overline;
+          flex-wrap: wrap;
+          th {
+            padding: 0.9em;
+          }
+        }
+        &::before {
+          content: "Sort by:";
+          margin-bottom: 1rem;
+          opacity: 0.8;
+        }
+      }
+      & > .table__body {
+        & tr.table-body__row {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+
+          & > td {
+            padding: 4vh 8vw;
+            text-align: justify;
+
+            &:first-child {
+              padding-top: 10vh;
+            }
+            &:last-child {
+              padding-bottom: 10vh;
+            }
+
+            &.row__td-description {
+              width: 100%;
+            }
+
+            &::before {
+              content: attr(data-column);
+              display: flex;
+              font-family: $font-headers;
+              font-size: 1.5em;
+              padding-bottom: 0.5em;
+              justify-content: flex-start;
+            }
+          }
+        }
+      }
+    }
+    @media (max-width: 780px) {
+      width: 100%;
+    }
+  }
+}

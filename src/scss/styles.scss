@@ -1,0 +1,60 @@
+@import "./vars.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $color-dark-main;
+  font-size: 16px;
+  font-family: $font-text, sans-serif;
+  color: $color-light-main;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.1s linear;
+}
+
+input {
+  background: $color-transparent;
+  color: $color-light-main;
+  font-size: 1.1rem;
+  font-family: inherit;
+  padding: 1rem;
+
+  &::placeholder {
+    font-size: 1rem;
+    color: $color-light-transparent;
+  }
+
+  &:focus {
+    outline: none;
+    color: $color-light-main;
+  }
+}
+
+h1,
+h2 {
+  font-family: $font-headers, sans-serif;
+  text-transform: lowercase;
+}
+
+h1 {
+  font-size: 3rem;
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-weight: 100;
+  letter-spacing: 1px;
+}

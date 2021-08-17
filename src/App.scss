@@ -1,0 +1,41 @@
+@import "./scss/vars.scss";
+
+.App {
+  padding-bottom: 3rem;
+  min-height: 90vh;
+
+  .loading-message {
+    color: $color-light-transparent;
+    width: 100%;
+    margin: 2rem 0;
+    padding: 3rem;
+    text-align: center;
+    animation: slide 3s linear infinite 0s;
+    overflow: hidden;
+    position: fixed;
+
+    @keyframes slide {
+      0% {
+        opacity: 0;
+        transform: translateX(-2rem);
+      }
+      50% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(2rem);
+      }
+    }
+  }
+  .error-message {
+    color: $color-light-transparent;
+    width: 100%;
+    margin: 2rem 0;
+    padding: 3rem;
+    text-align: center;
+    overflow: hidden;
+    position: fixed;
+  }
+}

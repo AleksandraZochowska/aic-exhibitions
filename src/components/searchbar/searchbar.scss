@@ -1,0 +1,40 @@
+@import "../../scss/vars.scss";
+
+.searchbar {
+  width: 100%;
+  margin: 4rem 0 1rem;
+  display: flex;
+  justify-content: center;
+
+  ul {
+    width: 25rem;
+    min-width: auto;
+    margin: 0 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 25px;
+    border: 3px solid $color-light-main;
+    transition: all 1s;
+
+    &:focus,
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:hover {
+      cursor: text;
+    }
+
+    .searchbar__icon {
+      font-size: 1.5rem;
+      padding: 15px;
+      color: $color-light-main;
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: 350px) {
+    transform: scale(0.9);
+  }
+}
