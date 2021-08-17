@@ -1,8 +1,9 @@
 import "./App.scss";
-import Topbar from "./components/topbar/topbar";
-import Table from "./components/table/table";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import throttle from "lodash/throttle";
+import Topbar from "./components/topbar/topbar";
+import Table from "./components/table/table";
 import Searchbar from "./components/searchbar/searchbar";
 import Pagination from "./components/pagination/pagination";
 
@@ -39,13 +40,14 @@ function App() {
   }, [currentPageNumber]);
 
   // Function sending GET request to AIC API
-  const fetchData = async (requestParams: { pageNumber?: number; searchQuery?: string; sort?: string }) => {
+  const fetchData = throttle(async (requestParams: { pageNumber?: number; searchQuery?: string; sort?: string }) => {
     let { pageNumber, searchQuery, sort } = requestParams;
     // Set page number to passed number - or to correct one if number outside of range was passed
     pageNumber = pageNumber === undefined || pageNumber < 1 ? 1 : pageNumber > lastPageNumber ? lastPageNumber : pageNumber;
-    // Set URL parts to be added to main API URL
+    // Set correct request URL
     searchQuery = searchQuery === undefined ? "" : searchQuery;
     sort = sort === undefined ? "" : sort;
+    const requestURL = sort || searchQuery ? `${apiUrl}/search?${sort}` : `${apiUrl}${sort}`;
 
     // Set flags
     setError(false);
@@ -53,11 +55,12 @@ function App() {
 
     try {
       // Send request
-      const response = await axios.get(`${apiUrl}/search?${searchQuery}${sort}`, {
+      const response = await axios.get(requestURL, {
         params: {
-          limit: 30,
+          q: searchQuery,
           page: pageNumber,
-          fields: ["title", "is_featured", "description", "gallery_title", "type", "status"],
+          limit: 30,
+          fields: "title,is_featured,description,gallery_title,type,status",
         },
       });
 
@@ -70,40 +73,46 @@ function App() {
       setLoading(false);
       setError(true);
     }
-  };
+  }, 60000);
 
   // Function handling searching for exhibitions, passed as callback to Searchbar component
-  const handleSearch: (query: string) => void = async (query) => {
+  const handleSearch: (query: string) => void = (query) => {
     // Disallow searching for new query while the request is still pending
     if (loading) return;
-    await setCurrentSearchQuery(`&q=${query}`);
-    if (currentPageNumber === 1) fetchData({ searchQuery: `&q=${query}` });
+    setCurrentSearchQuery(query);
+    setOrderAsc(true);
+    if (currentPageNumber === 1) fetchData({ searchQuery: query });
     else setCurrentPageNumber(1);
   };
 
   // Function handling sorting of columns, passed as callback to Table component
-  // ~ TODO: add sorting for columns other than Title ~
+  // ~ TODO: add sorting for description & gallery_title ~
   const handleSort: (e: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>) => void = (e) => {
     // Disallow sorting if an error occured or the request is still pending
     if (error || loading) return;
 
+    let sortBy = e.currentTarget.id.trim();
+    sortBy = sortBy === "description" ? "title" : sortBy === "gallery_title" ? "type" : sortBy;
+    const suffix = sortBy === "title" ? ".keyword" : sortBy === "description" ? ".text" : "";
+
+    // Sort descending
     if (orderAsc) {
       setOrderAsc(false);
-      setCurrentSort(`&sort[title.keyword][order]=desc`);
-      // ~ setCurrentSort(`&sort[${e.currentTarget.id}.keyword][order]=desc`); ~
-      if (currentPageNumber === 1) fetchData({ searchQuery: currentSearchQuery, sort: `&sort[title.keyword][order]=desc` });
+      setCurrentSort(`sort[${sortBy}${suffix}][order]=desc`);
+      if (currentPageNumber === 1) fetchData({ searchQuery: currentSearchQuery, sort: `sort[${sortBy}${suffix}][order]=desc` });
       else setCurrentPageNumber(1);
     }
+    // Sort ascending
     if (!orderAsc) {
       setOrderAsc(true);
-      setCurrentSort(`&sort[title.keyword][order]=asc`);
-      // ~ setCurrentSort(`&sort[${e.currentTarget.id}.keyword][order]=asc`); ~
-      if (currentPageNumber === 1) fetchData({ searchQuery: currentSearchQuery, sort: `&sort[title.keyword][order]=asc` });
+      setCurrentSort(`sort[${sortBy}${suffix}][order]=asc`);
+      if (currentPageNumber === 1) fetchData({ searchQuery: currentSearchQuery, sort: `sort[${sortBy}${suffix}][order]=asc` });
       else setCurrentPageNumber(1);
     }
   };
 
   // Function handling the page change, passed as callback to Pagination component
+  // ~ TODO: error-proof choosing high page number when search(/sort) is on ~
   const handlePageChange: (e: React.MouseEvent, val: string | number) => void = (e, val) => {
     // Disallow changing page while the request is pending
     if (loading) return;
@@ -165,15 +174,17 @@ function App() {
         <Searchbar onSearch={handleSearch} />
         {error ? null : <Pagination currentPage={currentPageNumber} lastPage={lastPageNumber} onPageChange={handlePageChange} />}
         {error ? (
-          <div className="error-message">"We're sorry, we cannot show you any exhibitions - try again!"</div>
+          <div className="message">We're sorry, we cannot show you any exhibitions - try again!</div>
         ) : loading ? (
           <div className="loading-message">LOADING...</div>
-        ) : (
+        ) : lastPageNumber ? (
           <Table
             tableData={shownExhibitionsList}
             tableHeadings={["Title", "Description", "Gallery", "Featured", "Type of Exhibition"]}
             onHeadingClick={handleSort}
           />
+        ) : (
+          <div className="message">No exhibitions match your search.</div>
         )}
         {loading || error ? null : <Pagination currentPage={currentPageNumber} lastPage={lastPageNumber} onPageChange={handlePageChange} />}
       </main>

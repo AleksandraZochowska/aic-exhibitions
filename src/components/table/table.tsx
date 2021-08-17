@@ -77,7 +77,10 @@ const Table: React.FC<{
           {gallery_title ? gallery_title : "—"}
         </td>
         <td key={`tr${trIndex}isfeatured`} data-column={"Featured"}>
-          {is_featured ? is_featured : "—"}
+          {is_featured ? "Yes" : "No"}
+          <br />
+          <br />
+          {status === "Confirmed" ? "(Exh. OPEN)" : status === "Closed" ? "(Exh. CLOSED)" : null}
         </td>
         <td key={`tr${trIndex}type`} data-column={"Type of Exhibition"}>
           {type ? type : "—"}
