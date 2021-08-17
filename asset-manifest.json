@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/aic-exhibitions/static/css/main.4d5f5349.chunk.css",
-    "main.js": "/aic-exhibitions/static/js/main.0c8070bd.chunk.js",
-    "main.js.map": "/aic-exhibitions/static/js/main.0c8070bd.chunk.js.map",
+    "main.css": "/aic-exhibitions/static/css/main.003a8f38.chunk.css",
+    "main.js": "/aic-exhibitions/static/js/main.c9c03cb5.chunk.js",
+    "main.js.map": "/aic-exhibitions/static/js/main.c9c03cb5.chunk.js.map",
     "runtime-main.js": "/aic-exhibitions/static/js/runtime-main.f9ea0d27.js",
     "runtime-main.js.map": "/aic-exhibitions/static/js/runtime-main.f9ea0d27.js.map",
-    "static/js/2.c682c926.chunk.js": "/aic-exhibitions/static/js/2.c682c926.chunk.js",
-    "static/js/2.c682c926.chunk.js.map": "/aic-exhibitions/static/js/2.c682c926.chunk.js.map",
+    "static/js/2.e34cc743.chunk.js": "/aic-exhibitions/static/js/2.e34cc743.chunk.js",
+    "static/js/2.e34cc743.chunk.js.map": "/aic-exhibitions/static/js/2.e34cc743.chunk.js.map",
     "index.html": "/aic-exhibitions/index.html",
-    "static/css/main.4d5f5349.chunk.css.map": "/aic-exhibitions/static/css/main.4d5f5349.chunk.css.map",
-    "static/js/2.c682c926.chunk.js.LICENSE.txt": "/aic-exhibitions/static/js/2.c682c926.chunk.js.LICENSE.txt"
+    "static/css/main.003a8f38.chunk.css.map": "/aic-exhibitions/static/css/main.003a8f38.chunk.css.map",
+    "static/js/2.e34cc743.chunk.js.LICENSE.txt": "/aic-exhibitions/static/js/2.e34cc743.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.f9ea0d27.js",
-    "static/js/2.c682c926.chunk.js",
-    "static/css/main.4d5f5349.chunk.css",
-    "static/js/main.0c8070bd.chunk.js"
+    "static/js/2.e34cc743.chunk.js",
+    "static/css/main.003a8f38.chunk.css",
+    "static/js/main.c9c03cb5.chunk.js"
   ]
 }
